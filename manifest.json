@@ -2,7 +2,7 @@
     "id": "sample-plugin",
     "name": "Sample Plugin",
     "version": "1.0.0",
-    "minAppVersion": "0.15.0",
+    "minAppVersion": "1.0.3",
     "description": "Sample Obsidian plugin using wdio-obsidian-service for e2e tests",
     "author": "Obsidian",
     "authorUrl": "https://obsidian.md",
