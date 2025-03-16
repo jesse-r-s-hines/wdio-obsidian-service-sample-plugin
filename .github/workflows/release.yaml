@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Release
+# Create a draft release when a new version tag is created
+# You can trigger this like so:
+#     npm version 1.0.0
+#     # push the created commit and tag
+#     git push
+#     git push origin tag 1.0.0
+# See also: https://docs.obsidian.md/Plugins/Releasing/Release+your+plugin+with+GitHub+Actions
+on:
+  push:
+    tags: ["*.*.*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Release
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+
+          if [ -e styles.css ]; then
+              FILES="main.js manifest.json styles.css"
+          else
+              FILES="main.js manifest.json"
+          fi
+
+          gh release create "$tag" \
+            --title="$tag" \
+            --draft \
+            $FILES
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
