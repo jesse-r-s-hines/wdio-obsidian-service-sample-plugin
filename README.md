@@ -1,94 +1,86 @@
-# Obsidian Sample Plugin
+<!-- [![Test](https://github.com/ORG/REPO/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/ORG/REPO/actions/workflows/test.yaml) -->
+# WDIO Obsidian Service Sample Plugin 
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+This is a sample Obsidian plugin with unit and end-to-end tests set up using
+[WebdriverIO](https://webdriver.io/), [Mocha](https://mochajs.org), and
+[wdio-obsidian-service](https://github.com/jesse-r-s-hines/wdio-obsidian-service). It also has
+GitHub actions to run the tests.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+For more information on how to develop Obsidian plugins and use this template see the
+[official obsidian sample plugin](https://github.com/obsidianmd/obsidian-sample-plugin) (which
+this template is based on) and the [Obsidian developer docs](https://docs.obsidian.md/Home).
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+For more info on how to configure and write your e2e tests, see
+[wdio-obsidian-service](https://github.com/jesse-r-s-hines/wdio-obsidian-service).
 
-## First time developing plugins?
-
-Quick starting guide for new plugin devs:
-
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
-
-## Releasing new releases
-
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
-
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+## Update dependencies
+You'll probably want to update the dependencies after you use this template:
+```shell
+npm run update
 ```
 
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+## Building and running the tests
+To build and test just use
+```shell
+npm install
+npm test
 ```
 
-## API Documentation
+`wdio-obsidian-service` will automatically download Obsidian and run your tests against a
+sandboxed instance of Obsidian so you don't need to worry about your personal Obsidian
+configuration affecting the tests.
 
-See https://github.com/obsidianmd/obsidian-api
+Use `npm run test:unit` and `npm run test:e2e` to run just the unit or end-to-end tests.
+
+You can manually specify Obsidian versions to test against using the `OBSIDIAN_VERSIONS`
+environment variable as a space separated list of appVersion/installerVersion pairs. (See `wdio-obsidian-service` docs for more info on how to set Obsidian versions). E.g.
+```shell
+OBSIDIAN_VERSIONS='latest/latest 1.8.9/1.7.7' npm run test:e2e
+```
+
+You can use `WDIO_MAX_INSTANCES` to increase the number of parallel Obsidian instances that will
+be launched during the tests.
+
+## `obsidian-launcher` CLI
+You can also use the `obsidian-launcher` command (part of `wdio-obsidian-service`) to download
+different versions of Obsidian and run them with sandboxed configuration directories:
+```shel
+npx obsidian-launcher watch --copy --plugin . test/vaults/simple
+```
+
+## GitHub Workflows
+This sample also has GitHub workflows already set up so you can end-to-end test your plugin
+automatically on PRs!
+
+### Test Workflow
+The [test](./.github/workflows/test.yaml) workflow runs the unit and e2e tests on pushes and PRs.
+
+### Check for new Obsidian
+The [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) workflow checks daily
+if there is a new Obsidian version. If so, it re-runs the [test](./.github/workflows/test.yaml)
+workflow against the new Obsidian version. If you've set up Obsidian Catalyst credentials (see
+below) the workflow will also test against the latest Obsidian beta, letting you catch any issues
+early.
+
+GitHub can be a bit finicky about scheduled workflows. If you fork this repo or use it as a
+template, you may need to manually enable the `test_schedule.yaml` workflow in the Actions tab
+before it will actually start the schedule.
+
+### Setting up Secrets
+Obsidian insider versions require require authentication to download, so if you want to test beta
+versions, you'll need to have an Obsidian account with Catalyst. Just add your credentials to
+GitHub secrets as `OBSIDIAN_USERNAME` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
+
+Note that workflows triggered by fork PRs won't have access to GitHub secrets and so only in-repo
+PRs and tests triggered by [test_schedule](./.github/workflows/test_schedule.yaml) will test
+against Obsidian beta versions.
+
+### Release Workflow
+To create a new plugin release, just run
+```
+nm version <new-version-number>
+git push
+git push origin tag <new-version-number>
+```
+This will trigger the [release](./.github/workflows/release.yaml) workflow and create a draft
+release. You can then go into GitHub release, write your release notes, and publish the release.
