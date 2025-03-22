@@ -3,9 +3,11 @@
     "version": "1.0.0",
     "description": "Sample Obsidian plugin using wdio-obsidian-service for e2e tests",
     "main": "main.js",
+    "type": "module",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+        "build-dev": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs development",
         "version": "node version-bump.mjs && git add manifest.json versions.json"
     },
     "keywords": [],
