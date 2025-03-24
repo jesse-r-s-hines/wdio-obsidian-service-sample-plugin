@@ -3,7 +3,7 @@
 
 This is a sample Obsidian plugin with unit and end-to-end tests set up using
 [WebdriverIO](https://webdriver.io/), [Mocha](https://mochajs.org), and
-[wdio-obsidian-service](https://github.com/jesse-r-s-hines/wdio-obsidian-service). It also has
+[wdio-obsidian-service](https://jesse-r-s-hines.github.io/wdio-obsidian-service/modules/wdio-obsidian-service.html). It also has
 GitHub actions to run the tests.
 
 For more information on how to develop Obsidian plugins and use this template see the
@@ -11,7 +11,7 @@ For more information on how to develop Obsidian plugins and use this template se
 this template is based on) and the [Obsidian developer docs](https://docs.obsidian.md/Home).
 
 For more info on how to configure and write your e2e tests, see
-[wdio-obsidian-service](https://github.com/jesse-r-s-hines/wdio-obsidian-service).
+[wdio-obsidian-service](https://jesse-r-s-hines.github.io/wdio-obsidian-service/modules/wdio-obsidian-service.html).
 
 ## Update dependencies
 You'll probably want to update the dependencies after you use this template:
