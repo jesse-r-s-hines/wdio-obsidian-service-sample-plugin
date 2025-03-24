@@ -63,7 +63,7 @@ below) the workflow will also test against the latest Obsidian beta, letting you
 early.
 
 GitHub can be a bit finicky about scheduled workflows. If you fork this repo or use it as a
-template, you may need to manually enable the `test_schedule.yaml` workflow in the Actions tab
+template, you may need to manually enable the `check_for_new_obsidian.yaml` workflow in the Actions tab
 before it will actually start the schedule.
 
 ### Setting up Secrets
