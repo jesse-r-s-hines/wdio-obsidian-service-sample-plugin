@@ -72,15 +72,15 @@ versions, you'll need to have an Obsidian account with Catalyst. Just add your c
 GitHub secrets as `OBSIDIAN_USERNAME` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
 
 Note that workflows triggered by fork PRs won't have access to GitHub secrets and so only in-repo
-PRs and tests triggered by [test_schedule](./.github/workflows/test_schedule.yaml) will test
+PRs and tests triggered by [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) will test
 against Obsidian beta versions.
 
 ### Release Workflow
 To create a new plugin release, just run
 ```
-nm version <new-version-number>
+npm version <new-version-number>
 git push
 git push origin tag <new-version-number>
 ```
 This will trigger the [release](./.github/workflows/release.yaml) workflow and create a draft
-release. You can then go into GitHub release, write your release notes, and publish the release.
+release. You can then go into GitHub releases, write your release notes, and publish the release.
