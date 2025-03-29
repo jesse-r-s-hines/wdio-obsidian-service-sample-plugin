@@ -20,7 +20,7 @@ describe('Test my plugin', function() {
         await obsidianPage.loadWorkspaceLayout("saved-layout");
 
         // there are helper functions for common tasks, see the API docs for a complete list:
-        // https://jesse-r-s-hines.github.io/wdio-obsidian-service/modules/wdio-obsidian-service.html
+        // https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service.html
 
         // You'll use executeObsidian a lot. It's a wrapper around WDIO's browser.execute that
         // passes in Obsidian variables such as app and the obsidian api.

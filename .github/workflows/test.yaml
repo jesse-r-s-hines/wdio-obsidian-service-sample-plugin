@@ -33,8 +33,8 @@ jobs:
         run: npm run test:unit
 
       # Get key to use for the .obsidian-cache GitHub cache.
-      # Run the wdio.conf.mts file directly, which logs the Obsidian versions to test, and use that
-      # output as the cache key.
+      # Run wdio.conf.mts directly, which will logs the Obsidian versions to test (see the
+      # `if (process.env.CI)` bit in wdio.conf.mts). We'll use that output as the cache key.
       - id: get-cache-key
         name: "Get Obsidian cache key"
         shell: bash
