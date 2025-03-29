@@ -45,7 +45,7 @@ describe('Test my plugin', function() {
     })
 
     it("use reload obsidian", async function() {
-        // By default the vault specified in wdio.conf.ts is opened, but you can explicitly open
+        // By default the vault specified in wdio.conf.mts is opened, but you can explicitly open
         // vaults using reloadObsidian. This will relaunch Obsidian with a fresh copy of the vault.
         // Avoid calling this too often though or you'll tests will get really slow.
         await browser.reloadObsidian({vault: "test/vaults/simple"});
