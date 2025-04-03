@@ -1,17 +1,17 @@
 import { browser } from '@wdio/globals'
-import { expect } from 'chai';
 import { obsidianPage } from 'wdio-obsidian-service';
 
 describe('Test my plugin', function() {
     it('test command open-sample-modal-simple', async function() {
         await browser.executeObsidianCommand("sample-plugin:open-sample-modal-simple");
 
-        expect(await browser.$(".modal-container .modal-content").isExisting()).to.equal(true);
-        expect(await browser.$(".modal-container .modal-content").getText()).to.equal("Woah!");
+        const modalEl = browser.$(".modal-container .modal-content");
+        await expect(modalEl).toExist();
+        await expect(modalEl).toHaveText("Woah!");
     })
 
     it('test status bar element', async function() {
-        await browser.$(".status-bar").$("=Status Bar Text").isExisting();
+        await expect(browser.$(".status-bar").$("div=Status Bar Text")).toExist();
     })
 
     it('use workspace layout', async function() {
@@ -35,7 +35,7 @@ describe('Test my plugin', function() {
             }
         })
 
-        expect(activeFile).to.eql("Welcome.md");
+        expect(activeFile).toEqual("Welcome.md");
     })
 
     it("create a file", async function() {
@@ -59,7 +59,7 @@ describe('Test my plugin', function() {
         })
         
         // Since we used reloadObsidian, "File1.md" won't exist anymore
-        expect(fileList).to.eql(["File2.md", "Welcome.md"]);
+        expect(fileList).toEqual(["File2.md", "Welcome.md"]);
     })
 
     it("use resetVault", async function() {
@@ -72,6 +72,6 @@ describe('Test my plugin', function() {
         const fileList = await browser.executeObsidian(async ({app}) => {
             return await app.vault.getMarkdownFiles().map(f => f.path).sort();
         })
-        expect(fileList).to.eql(["Welcome.md"]);
+        expect(fileList).toEqual(["Welcome.md"]);
     })
 })
