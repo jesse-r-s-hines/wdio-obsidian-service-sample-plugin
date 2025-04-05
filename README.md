@@ -88,5 +88,5 @@ npm version <new-version-number>
 git push
 git push origin tag <new-version-number>
 ```
-This will trigger the [release](./.github/workflows/release.yaml) workflow and create a draft
-release. You can then go into GitHub releases, write your release notes, and publish the release.
+This will trigger the [release](./.github/workflows/release.yaml) workflow and create a release.
+You can then go into GitHub releases and write your release notes.
