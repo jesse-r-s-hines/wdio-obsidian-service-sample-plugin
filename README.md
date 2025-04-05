@@ -30,8 +30,6 @@ npm test
 sandboxed instance of Obsidian so you don't need to worry about your personal Obsidian
 configuration affecting the tests.
 
-Use `npm run test:unit` and `npm run test:e2e` to run just the unit or end-to-end tests.
-
 You can manually specify Obsidian versions to test against using the `OBSIDIAN_VERSIONS`
 environment variable as a space separated list of appVersion/installerVersion pairs. (See
 [wdio-obsidian-service docs](https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README.html#obsidian-app-vs-installer-versions)
@@ -42,6 +40,9 @@ OBSIDIAN_VERSIONS='latest/latest 1.8.9/1.7.7' npm run test:e2e
 
 You can use `WDIO_MAX_INSTANCES` to increase the number of parallel Obsidian instances that will
 be launched during the tests.
+
+This sample also has unit tests set up. Use `npm run test:unit` and `npm run test:e2e` to run just the unit or
+end-to-end tests.
 
 ## `obsidian-launcher` CLI
 You can also use the `obsidian-launcher` command (part of `wdio-obsidian-service`) to download
