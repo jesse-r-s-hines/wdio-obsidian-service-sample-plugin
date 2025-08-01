@@ -1,72 +1,89 @@
 import * as path from "path"
-import { obsidianBetaAvailable, resolveObsidianVersions } from "wdio-obsidian-service";
+import { parseObsidianVersions, obsidianBetaAvailable } from "wdio-obsidian-service";
+import { env } from "process";
 
+// wdio-obsidian-service will download Obsidian versions into this directory
 const cacheDir = path.resolve(".obsidian-cache");
 
-let versions: [string, string][]; // [appVersion, installerVersion][]
-if (process.env.OBSIDIAN_VERSIONS) {
-    // Space separated list of appVersion/installerVersion, e.g. "1.7.7/latest latest/earliest"
-    versions = process.env.OBSIDIAN_VERSIONS.split(/[ ,]+/).map(v => {
-        const [app, installer = "earliest"] = v.split("/"); // default to earliest installer
-        return [app, installer];
-    })
-} else if (process.env.CI) {
-    // Running in GitHub CI. You can use RUNNER_OS to select different versions on different
-    // platforms in the workflow matrix if you want
-    versions = [["earliest", "earliest"], ["latest", "latest"]];
-    if (await obsidianBetaAvailable(cacheDir)) {
-        versions.push(["latest-beta", "latest"]);
-    }
-
+// choose Obsidian versions to test
+let defaultVersions = "earliest/earliest latest/latest";
+if (await obsidianBetaAvailable({cacheDir})) {
+    defaultVersions += " latest-beta/latest"
+}
+const desktopVersions = await parseObsidianVersions(
+    env.OBSIDIAN_VERSIONS ?? defaultVersions,
+    {cacheDir},
+);
+const mobileVersions = await parseObsidianVersions(
+    env.OBSIDIAN_MOBILE_VERSIONS ?? env.OBSIDIAN_VERSIONS ?? defaultVersions,
+    {cacheDir},
+);
+if (env.CI) {
     // Print the resolved Obsidian versions to use as the workflow cache key
     // (see .github/workflows/test.yaml)
-    for (let [app, installer] of versions) {
-        [app, installer] = await resolveObsidianVersions(app, installer, cacheDir);
-        console.log(`${app}/${installer}`);
-    }
-} else {
-    versions = [["earliest", "earliest"], ["latest", "latest"]];
+    console.log("obsidian-cache-key:", JSON.stringify([desktopVersions, mobileVersions]));
 }
 
 export const config: WebdriverIO.Config = {
     runner: 'local',
+    framework: 'mocha',
 
-    specs: [
-        './test/specs/**/*.e2e.ts'
-    ],
+    specs: ['./test/specs/**/*.e2e.ts'],
 
     // How many instances of Obsidian should be launched in parallel during testing.
-    maxInstances: Number(process.env["WDIO_MAX_INSTANCES"] || 4),
+    maxInstances: Number(env.WDIO_MAX_INSTANCES || 4),
 
-    capabilities: versions.map(([appVersion, installerVersion]) => ({
-        browserName: 'obsidian',
-        browserVersion: appVersion,
-        'wdio:obsidianOptions': {
-            installerVersion: installerVersion,
-            plugins: ["."],
-            // If you need to switch between multiple vaults, you can omit this and use
-            // `reloadObsidian` to open vaults during the test.
-            vault: "test/vaults/simple",
-        },
-    })),
+    // "matrix" to test your plugin on multiple Obsidian versions and with emulateMobile
+    capabilities: [
+        ...desktopVersions.map<WebdriverIO.Capabilities>(([appVersion, installerVersion]) => ({
+            browserName: 'obsidian',
+            'wdio:obsidianOptions': {
+                appVersion, installerVersion,
+                plugins: ["."],
+                // If you need to switch between multiple vaults, you can omit this and
+                // use `reloadObsidian` to open vaults during the test.
+                vault: "test/vaults/simple",
+            },
+        })),
+        // Test your plugin on the emulated mobile UI. If your plugin "isDesktopOnly",
+        // just remove this bit. If you want to test on the real mobile app instead of
+        // emulating it on desktop, remove this and enable the android tests in
+        // wdio.mobile.conf.mts instead.
+        // See https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README#mobile-emulation
+        ...mobileVersions.map<WebdriverIO.Capabilities>(([appVersion, installerVersion]) => ({
+            browserName: 'obsidian',
+            'wdio:obsidianOptions': {
+                appVersion, installerVersion,
+                emulateMobile: true,
+                plugins: ["."],
+                vault: "test/vaults/simple",
+            },
+            'goog:chromeOptions': {
+                mobileEmulation: {
+                    // can also set deviceName: "iPad" etc. instead of hard-coding size.
+                    // If you have issues getting click events etc. to work properly, try
+                    // setting `touch: false` here.
+                    deviceMetrics: {width: 390, height: 844},
+                },
+            },
+        })),
+    ],
 
-    framework: 'mocha',
     services: ["obsidian"],
-    // You can use any wdio reporter, but by default they show the chromium version instead of the Obsidian version a
-    // test is running on. obsidian-reporter is just a wrapper around spec-reporter that shows the Obsidian version.
+    // You can use any wdio reporter, but they show the Chromium version instead of the
+    // Obsidian version a test is running on. obsidian-reporter is just a wrapper around
+    // spec-reporter that shows the Obsidian version.
     reporters: ['obsidian'],
 
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000,
-        // You can set more config here like "retry" to retry flaky tests
-        // or "bail" to quit tests after the first failure.
+        timeout: 60 * 1000,
+        // You can set more config here like "retry" to retry flaky tests or "bail" to
+        // quit tests after the first failure.
     },
-
     waitforInterval: 250,
     waitforTimeout: 5 * 1000,
+    logLevel: "warn",
 
     cacheDir: cacheDir,
-
-    logLevel: "warn",
 }

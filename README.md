@@ -17,6 +17,8 @@ npm run update
 To build and test just use
 ```shell
 npm install
+# Make sure to build before running e2e tests (or use build-dev to watch for changes)
+npm run build
 npm test
 ```
 
@@ -28,6 +30,8 @@ OBSIDIAN_VERSIONS='latest/latest 1.8.9/1.7.7' npm run test:e2e
 ```
 
 You can use `WDIO_MAX_INSTANCES` to increase the number of parallel Obsidian instances that will be launched during the tests.
+
+The tests are configured in [wdio.conf.mts](./wdio.conf.mts) which you can adjust as needed for your plugin.
 
 This sample also has unit tests set up. Use `npm run test:unit` and `npm run test:e2e` to run just the unit or end-to-end tests.
 
@@ -42,7 +46,7 @@ CLI docs [here](https://jesse-r-s-hines.github.io/wdio-obsidian-service/obsidian
 This sample has GitHub workflows already set up so you can end-to-end test your plugin automatically on PRs!
 
 ### Test Workflow
-The [test](./.github/workflows/test.yaml) workflow runs the unit and e2e tests on pushes and PRs. There's code in `wdio.conf.mts` that checks if it is running under CI and chooses which Obsidian versions to test.
+The [test](./.github/workflows/test.yaml) workflow runs the unit and e2e tests on pushes and PRs.
 
 ### Check for new Obsidian
 The [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) workflow checks daily if there is a new Obsidian version. If so, it re-runs the [test](./.github/workflows/test.yaml) workflow against the new Obsidian version. If you've set up Obsidian Catalyst credentials (see below) the workflow will also test against the latest Obsidian beta, letting you catch any issues early.
