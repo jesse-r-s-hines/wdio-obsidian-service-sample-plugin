@@ -54,7 +54,7 @@ The [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) wo
 GitHub can be a bit finicky about scheduled workflows. If you fork this repo or use it as a template, you may need to manually enable the `check_for_new_obsidian.yaml` workflow in the Actions tab before it will actually start the schedule.
 
 ### Setting up Secrets
-Obsidian insider versions require authentication to download, so if you want to test beta versions, you'll need to have an Obsidian account with Catalyst. Just add your credentials to GitHub secrets as `OBSIDIAN_USERNAME` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
+Obsidian insider versions require authentication to download, so if you want to test beta versions, you'll need to have an Obsidian account with Catalyst. Just add your credentials to GitHub secrets as `OBSIDIAN_EMAIL` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
 
 Note that workflows triggered by fork PRs won't have access to GitHub secrets and so only in-repo PRs and tests triggered by [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) will test against Obsidian beta versions.
 
