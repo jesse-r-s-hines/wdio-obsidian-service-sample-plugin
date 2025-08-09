@@ -82,7 +82,7 @@ jobs:
       - name: Run e2e tests
         run: npm run test:e2e
         env:
-          WDIO_MAX_INSTANCES: 4
+          WDIO_MAX_INSTANCES: 2 # Github runners are 2-core
           OBSIDIAN_EMAIL: ${{ secrets.OBSIDIAN_EMAIL }}
           OBSIDIAN_PASSWORD: ${{ secrets.OBSIDIAN_PASSWORD }}
 
