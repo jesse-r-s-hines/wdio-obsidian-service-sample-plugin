@@ -8,6 +8,8 @@ on:
   # Allow triggering the workflow manually and in check_for_new_obsidian.yaml
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   test-desktop:
     strategy:
