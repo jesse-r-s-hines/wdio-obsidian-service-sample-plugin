@@ -10,7 +10,7 @@ For more info on how to configure and write your e2e tests, see [wdio-obsidian-s
 ## Update dependencies
 You'll probably want to update the dependencies after you use this template:
 ```shell
-npm run update
+npm run update --save
 ```
 
 ## Building and running the tests
