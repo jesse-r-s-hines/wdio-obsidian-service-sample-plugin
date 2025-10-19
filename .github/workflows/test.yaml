@@ -91,8 +91,9 @@ jobs:
           OBSIDIAN_PASSWORD: ${{ secrets.OBSIDIAN_PASSWORD }}
 
   # If you want to test on the real Obsidian Android app, enable this job. You'll need to
-  # set up a `"test:android": "wdio run ./wdio.mobile.conf.mts"` script, and install the
-  # appium dependencies. See https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README#android
+  # set up a `"test:android": "wdio run ./wdio.mobile.conf.mts"` script to `package.json`
+  # and add `test-android` to check.needs at the end of this workflow.
+  # See https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README#android
   # test-android:
   #   env:
   #     AVD_ARGS: "-no-metrics -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none"
