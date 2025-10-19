@@ -38,7 +38,7 @@ export const config: WebdriverIO.Config = {
         platformName: 'Android',
         'appium:automationName': 'UiAutomator2',
         'appium:avd': "obsidian_test",
-        'appium:enforceAppInstall': true,
+        'appium:noReset': true, // wdio-obsidian-service will handle installing Obsidian
         'appium:adbExecTimeout': 60 * 1000,
         'wdio:obsidianOptions': {
             appVersion: appVersion,
