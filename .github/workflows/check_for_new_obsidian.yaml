@@ -4,8 +4,8 @@ name: Check for new Obsidian
 # If you set up Obsidian Catalyst secrets, this will test against the Obsidian beta versions
 # as well, letting you know if there are any issues early.
 
-# If you have created your repo from the sample repo, GitHub may not enable the schedule by
-# default. You'll need to enable it manually on the GitHub Actions page.
+# If you have created your repo from the sample template repo, GitHub may not enable the schedule
+# by default and you'll need to enable it manually on the GitHub Actions page.
 
 # Note that GitHub will disable schedule workflows after 60 days of repository "inactivity"
 on:

@@ -1,9 +1,10 @@
-import { browser } from '@wdio/globals'
+import { browser, expect } from '@wdio/globals'
+import { describe, it } from "mocha";
 import { obsidianPage } from 'wdio-obsidian-service';
 
 describe('Test my plugin', function() {
-    it('test command open-sample-modal-simple', async function() {
-        await browser.executeObsidianCommand("sample-plugin:open-sample-modal-simple");
+    it('test command open-modal-simple', async function() {
+        await browser.executeObsidianCommand("sample-plugin:open-modal-simple");
 
         const modalEl = browser.$(".modal-container .modal-content");
         await expect(modalEl).toExist();
@@ -11,7 +12,7 @@ describe('Test my plugin', function() {
     })
 
     it('test status bar element', async function() {
-        await expect(browser.$(".status-bar").$("div=Status Bar Text")).toExist();
+        await expect(browser.$(".status-bar").$("div=Status bar text")).toExist();
     })
 
     it('use workspace layout', async function() {
@@ -33,9 +34,10 @@ describe('Test my plugin', function() {
             if (leaf?.view instanceof obsidian.FileView) {
                 return leaf.view.file?.path;
             }
+            return undefined;
         })
 
-        expect(activeFile).toEqual("Welcome.md");
+        await expect(activeFile).toEqual("Welcome.md");
     })
 
     it("create a file", async function() {
@@ -47,19 +49,19 @@ describe('Test my plugin', function() {
     it("use reload obsidian", async function() {
         // By default the vault specified in wdio.conf.mts is opened, but you can explicitly open
         // vaults using reloadObsidian. This will relaunch Obsidian with a fresh copy of the vault.
-        // Avoid calling this too often though or you'll tests will get really slow.
+        // As this does a full reboot of Obsidian it's rather slow
         await browser.reloadObsidian({vault: "test/vaults/simple"});
 
         await browser.executeObsidian(async ({app}) => {
             await app.vault.create("File2.md", "New Content");
         })
 
-        const fileList = await browser.executeObsidian(async ({app}) => {
-            return await app.vault.getMarkdownFiles().map(f => f.path).sort();
+        const fileList = await browser.executeObsidian(({app}) => {
+            return app.vault.getMarkdownFiles().map(f => f.path).sort();
         })
         
         // Since we used reloadObsidian, "File1.md" won't exist anymore
-        expect(fileList).toEqual(["File2.md", "Welcome.md"]);
+        await expect(fileList).toEqual(["File2.md", "Welcome.md"]);
     })
 
     it("use resetVault", async function() {
@@ -69,9 +71,9 @@ describe('Test my plugin', function() {
         // want to put this in a beforeEach
         await obsidianPage.resetVault("test/vaults/simple");
 
-        const fileList = await browser.executeObsidian(async ({app}) => {
-            return await app.vault.getMarkdownFiles().map(f => f.path).sort();
+        const fileList = await browser.executeObsidian(({app}) => {
+            return app.vault.getMarkdownFiles().map(f => f.path).sort();
         })
-        expect(fileList).toEqual(["Welcome.md"]);
+        await expect(fileList).toEqual(["Welcome.md"]);
     })
 })
