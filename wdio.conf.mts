@@ -47,8 +47,9 @@ export const config: WebdriverIO.Config = {
         })),
         // Test your plugin on the emulated mobile UI. If your plugin "isDesktopOnly",
         // just remove this bit. If you want to test on the real mobile app instead of
-        // emulating it on desktop, remove this and enable the android tests in
-        // wdio.mobile.conf.mts instead.
+        // emulating mobile on desktop, remove this and use the android tests in
+        // wdio.mobile.conf.mts instead. You can also keep both emulate mobile and Android tests,
+        // using emulate mobile for faster iteration and only testing on real Android periodically
         // See https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README#mobile-emulation
         ...mobileVersions.map<WebdriverIO.Capabilities>(([appVersion, installerVersion]) => ({
             browserName: 'obsidian',
@@ -86,4 +87,6 @@ export const config: WebdriverIO.Config = {
     logLevel: "warn",
 
     cacheDir: cacheDir,
+
+    injectGlobals: false, // import describe/expect etc explicitly to make eslint happy
 }

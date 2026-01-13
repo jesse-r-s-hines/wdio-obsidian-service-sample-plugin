@@ -1,13 +1,12 @@
 import * as path from "path"
-import { parseObsidianVersions, obsidianBetaAvailable } from "wdio-obsidian-service";
+import { parseObsidianVersions } from "wdio-obsidian-service";
 import { env } from "process";
 
 // Use this wdio configuration to test Obsidian against the real Obsidian Android app.
-// Add `"test:android": "wdio run ./wdio.mobile.conf.mts"` to package.json to enable it.
 // You'll need to set up Android Studio and Appium for this to work, see
 // https://jesse-r-s-hines.github.io/wdio-obsidian-service/wdio-obsidian-service/README#android
-// If your plugin "isDesktopOnly", or if you want to just use the desktop "emulateMobile"
-// testing instead, just delete this file.
+// If your plugin "isDesktopOnly", or if you only want to use the desktop "emulateMobile"
+// testing, just delete this file.
 
 const cacheDir = path.resolve(".obsidian-cache");
 
@@ -35,13 +34,13 @@ export const config: WebdriverIO.Config = {
     // (installerVersion isn't relevant for the mobile app)
     capabilities: versions.map<WebdriverIO.Capabilities>(([appVersion]) => ({
         browserName: "obsidian",
+        browserVersion: appVersion,
         platformName: 'Android',
         'appium:automationName': 'UiAutomator2',
         'appium:avd': "obsidian_test",
         'appium:noReset': true, // wdio-obsidian-service will handle installing Obsidian
         'appium:adbExecTimeout': 60 * 1000,
         'wdio:obsidianOptions': {
-            appVersion: appVersion,
             plugins: ["."],
             vault: "test/vaults/simple",
         },
@@ -64,4 +63,6 @@ export const config: WebdriverIO.Config = {
     logLevel: "warn",
 
     cacheDir: cacheDir,
+
+    injectGlobals: false, // import describe/expect etc explicitly to make eslint happy
 }
