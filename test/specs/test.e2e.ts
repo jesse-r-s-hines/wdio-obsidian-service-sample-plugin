@@ -37,7 +37,7 @@ describe('Test my plugin', function() {
             return undefined;
         })
 
-        await expect(activeFile).toEqual("Welcome.md");
+        expect(activeFile).toEqual("Welcome.md");
     })
 
     it("create a file", async function() {
@@ -61,7 +61,7 @@ describe('Test my plugin', function() {
         })
         
         // Since we used reloadObsidian, "File1.md" won't exist anymore
-        await expect(fileList).toEqual(["File2.md", "Welcome.md"]);
+        expect(fileList).toEqual(["File2.md", "Welcome.md"]);
     })
 
     it("use resetVault", async function() {
@@ -74,6 +74,6 @@ describe('Test my plugin', function() {
         const fileList = await browser.executeObsidian(({app}) => {
             return app.vault.getMarkdownFiles().map(f => f.path).sort();
         })
-        await expect(fileList).toEqual(["Welcome.md"]);
+        expect(fileList).toEqual(["Welcome.md"]);
     })
 })
