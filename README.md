@@ -48,15 +48,18 @@ This sample has GitHub workflows already set up so you can end-to-end test your 
 ### Test Workflow
 The [test](./.github/workflows/test.yaml) workflow runs the unit and e2e tests on pushes and PRs.
 
+#### Setting up Secrets
+Obsidian insider versions require authentication to download, so if you want to test beta versions, you'll need to have an Obsidian account with Catalyst. Just add your credentials to GitHub secrets as `OBSIDIAN_EMAIL` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
+
+Note that workflows triggered by fork PRs won't have access to GitHub secrets and so only in-repo PRs and tests triggered by [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) will test against Obsidian beta versions.
+
+### Lint Workflow
+Lints the plugin using [ESLint](https://eslint.org) and the official [Obsidian ESLint plugin](https://github.com/obsidianmd/eslint-plugin).
+
 ### Check for new Obsidian
 The [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) workflow checks daily if there is a new Obsidian version. If so, it re-runs the [test](./.github/workflows/test.yaml) workflow against the new Obsidian version. If you've set up Obsidian Catalyst credentials (see below) the workflow will also test against the latest Obsidian beta, letting you catch any issues early.
 
 GitHub can be a bit finicky about scheduled workflows. If you fork this repo or use it as a template, you may need to manually enable the `check_for_new_obsidian.yaml` workflow in the Actions tab before it will actually start the schedule.
-
-### Setting up Secrets
-Obsidian insider versions require authentication to download, so if you want to test beta versions, you'll need to have an Obsidian account with Catalyst. Just add your credentials to GitHub secrets as `OBSIDIAN_EMAIL` and `OBSIDIAN_PASSWORD`. 2FA needs to be disabled.
-
-Note that workflows triggered by fork PRs won't have access to GitHub secrets and so only in-repo PRs and tests triggered by [check_for_new_obsidian](./.github/workflows/check_for_new_obsidian.yaml) will test against Obsidian beta versions.
 
 ### Release Workflow
 To create a new plugin release, just run
