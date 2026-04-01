@@ -79,7 +79,7 @@ export const config: WebdriverIO.Config = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 60 * 1000,
-        // You can set more config here like "retry" to retry flaky tests or "bail" to
+        // You can set more config here like "retries" to retry flaky tests or "bail" to
         // quit tests after the first failure.
     },
     waitforInterval: 250,
